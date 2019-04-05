@@ -1,0 +1,33 @@
+
+**** Build of configuration Debug for project EECS_388_Base_Project_Fa18 ****
+
+"C:\\TI_CodeComposer\\ccsv8\\utils\\bin\\gmake" -k all 
+ 
+Building file: "../EECS_388_Program_Base_Fa18.c"
+Invoking: ARM Compiler
+"C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --include_path="H:/EECS_388/TI_ARM_Projects/EECS_388_Base_Project_Fa18" --include_path="H:/EECS_388/TI_ARM_Projects" --include_path="H:\EECS_388\TI_ARM_Projects\EECS_388_Base_Project_Fa18/Source/include" --include_path="H:\EECS_388\TI_ARM_Projects\EECS_388_Base_Project_Fa18/Source/portable/CCS/ARM_CM4F" --include_path="C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/include" --include_path="C:/TI_CodeComposer/TivaWare" --define=ccs="ccs" --define=PART_TM4C1294NCPDT -g --gcc --printf_support=full --diag_warning=225 --diag_wrap=off --display_error_number --super_quiet --abi=eabi -k --asm_listing --src_interlist --preproc_with_compile --preproc_dependency="EECS_388_Program_Base_Fa18.d_raw"  "../EECS_388_Program_Base_Fa18.c"
+Finished building: "../EECS_388_Program_Base_Fa18.c"
+ 
+Building target: "EECS_388_Base_Project_Fa18.out"
+Invoking: ARM Linker
+"C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C1294NCPDT -g --gcc --printf_support=full --diag_warning=225 --diag_wrap=off --display_error_number --super_quiet --abi=eabi -k --asm_listing --src_interlist -z -m"EECS_388_Base_Project_Fa18.map" --heap_size=0x0800 --stack_size=0x0800 -i"C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/lib" -i"C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="EECS_388_Base_Project_Fa18_linkInfo.xml" --rom_model -o "EECS_388_Base_Project_Fa18.out" "./EECS_388_Program_Base_Fa18.obj" "./TM4C_Base_Fa18_Startup.obj" "./heap_2.obj" "./Drivers/EECS388_DAC.obj" "./Drivers/EECS388_LED.obj" "./Drivers/Processor_Initialization_TM4C1294.obj" "./Drivers/UARTStdio_Initialization_TM4C1294.obj" "./Drivers/uartstdio.obj" "./Source/croutine.obj" "./Source/event_groups.obj" "./Source/list.obj" "./Source/queue.obj" "./Source/tasks.obj" "./Source/timers.obj" "./Source/portable/CCS/ARM_CM4F/port.obj" "./Source/portable/CCS/ARM_CM4F/portasm.obj" "./Tasks/Float_to_Int32.obj" "./Tasks/Task_ADC.obj" "./Tasks/Task_Blinky_PortN_1.obj" "./Tasks/Task_Button.obj" "./Tasks/Task_Cap.obj" "./Tasks/Task_LED.obj" "./Tasks/Task_ReportData.obj" "./Tasks/Task_ReportTime.obj" "./Tasks/Task_SpeakerBuzz.obj" "../tm4c1294ncpdt.cmd"  -llibc.a -l"C:/TI_CodeComposer/TivaWare/driverlib/ccs/Debug/driverlib.lib" -l"C:/TI_CodeComposer/TivaWare/sensorlib/ccs/Debug/sensorlib.lib" 
+Finished building target: "EECS_388_Base_Project_Fa18.out"
+ 
+Building files: "EECS_388_Base_Project_Fa18.out"
+Invoking: ARM Hex Utility
+"C:/TI_CodeComposer/ccsv8/tools/compiler/ti-cgt-arm_18.1.2.LTS/bin/armhex"  -o "EECS_388_Base_Project_Fa18.hex"  "EECS_388_Base_Project_Fa18.out" 
+Translating to Extended Tektronix format...
+   "EECS_388_Base_Project_Fa18.out" .intvecs ==> .intvecs
+   "EECS_388_Base_Project_Fa18.out" .text ==> .text
+   "EECS_388_Base_Project_Fa18.out" .const ==> .const
+   "EECS_388_Base_Project_Fa18.out" .cinit ==> .cinit
+warning: Data is being written to auto-generated file
+   EECS_388_Base_Project_Fa18.x1
+warning: Data is being written to auto-generated file
+   EECS_388_Base_Project_Fa18.x2
+warning: Data is being written to auto-generated file
+   EECS_388_Base_Project_Fa18.x3
+Finished building: "EECS_388_Base_Project_Fa18.out"
+ 
+
+**** Build Finished ****

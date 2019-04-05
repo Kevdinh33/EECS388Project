@@ -1,0 +1,82 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+SHELL = cmd.exe
+
+# Add inputs and outputs from these tool invocations to the build variables 
+ASM_SRCS += \
+../Tasks/Float_to_Int32.asm 
+
+C_SRCS += \
+../Tasks/Task_ADC.c \
+../Tasks/Task_Blinky_PortN_1.c \
+../Tasks/Task_Button.c \
+../Tasks/Task_Cap.c \
+../Tasks/Task_LED.c \
+../Tasks/Task_ReportData.c \
+../Tasks/Task_ReportTime.c \
+../Tasks/Task_SpeakerBuzz.c 
+
+C_DEPS += \
+./Tasks/Task_ADC.d \
+./Tasks/Task_Blinky_PortN_1.d \
+./Tasks/Task_Button.d \
+./Tasks/Task_Cap.d \
+./Tasks/Task_LED.d \
+./Tasks/Task_ReportData.d \
+./Tasks/Task_ReportTime.d \
+./Tasks/Task_SpeakerBuzz.d 
+
+OBJS += \
+./Tasks/Float_to_Int32.obj \
+./Tasks/Task_ADC.obj \
+./Tasks/Task_Blinky_PortN_1.obj \
+./Tasks/Task_Button.obj \
+./Tasks/Task_Cap.obj \
+./Tasks/Task_LED.obj \
+./Tasks/Task_ReportData.obj \
+./Tasks/Task_ReportTime.obj \
+./Tasks/Task_SpeakerBuzz.obj 
+
+ASM_DEPS += \
+./Tasks/Float_to_Int32.d 
+
+OBJS__QUOTED += \
+"Tasks\Float_to_Int32.obj" \
+"Tasks\Task_ADC.obj" \
+"Tasks\Task_Blinky_PortN_1.obj" \
+"Tasks\Task_Button.obj" \
+"Tasks\Task_Cap.obj" \
+"Tasks\Task_LED.obj" \
+"Tasks\Task_ReportData.obj" \
+"Tasks\Task_ReportTime.obj" \
+"Tasks\Task_SpeakerBuzz.obj" 
+
+C_DEPS__QUOTED += \
+"Tasks\Task_ADC.d" \
+"Tasks\Task_Blinky_PortN_1.d" \
+"Tasks\Task_Button.d" \
+"Tasks\Task_Cap.d" \
+"Tasks\Task_LED.d" \
+"Tasks\Task_ReportData.d" \
+"Tasks\Task_ReportTime.d" \
+"Tasks\Task_SpeakerBuzz.d" 
+
+ASM_DEPS__QUOTED += \
+"Tasks\Float_to_Int32.d" 
+
+ASM_SRCS__QUOTED += \
+"../Tasks/Float_to_Int32.asm" 
+
+C_SRCS__QUOTED += \
+"../Tasks/Task_ADC.c" \
+"../Tasks/Task_Blinky_PortN_1.c" \
+"../Tasks/Task_Button.c" \
+"../Tasks/Task_Cap.c" \
+"../Tasks/Task_LED.c" \
+"../Tasks/Task_ReportData.c" \
+"../Tasks/Task_ReportTime.c" \
+"../Tasks/Task_SpeakerBuzz.c" 
+
+

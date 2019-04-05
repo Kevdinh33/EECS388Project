@@ -1,0 +1,140 @@
+/*--Task_Buzzer.c
+ *
+ *  Author:			Kevin Dinh
+ *	Organization:	KU/EECS/EECS 388
+ *  Date:			February 22, 2016
+ *
+ *  Description:	Blinks LED D1 on Tiva TMC41294 Evaluation board
+ *
+ */
+
+#include	"inc/hw_ints.h"
+#include	"inc/hw_memmap.h"
+#include	"inc/hw_types.h"
+#include	"inc/hw_uart.h"
+
+#include	<stddef.h>
+#include	<stdbool.h>
+#include	<stdint.h>
+#include	<stdarg.h>
+
+#include	"driverlib/sysctl.h"
+#include	"driverlib/pin_map.h"
+#include	"driverlib/gpio.h"
+
+#include	"FreeRTOS.h"
+#include	"task.h"
+
+#include    "driverlib/adc.h"
+
+//
+// Defines
+//
+//
+// Define a scale for specifying the pulse width.
+// The scale is 1000 / 20 ms. A value of 100
+// represents ( 75 / 1000 ) ms = 1.5 ms. This
+// is the neutral position.
+//
+#define PWM_Period 1000
+#define PWM_State_Low 50
+#define PWM_State_High 100
+#define PWM_State_Neutral 75
+
+//
+// PWM Parameters
+//
+// Example to be presented in lecture
+//
+#define PWM_0_4_Period 37515
+#define PWM_0_4_Low_Count ((PWM_0_4_Period * PWM_State_Low) / PWM_Period)
+#define PWM_0_4_High_Count ((PWM_0_4_Period * PWM_State_High) / PWM_Period)
+#define PWM_0_4_Neutral_Count ((PWM_0_4_Period * PWM_State_Neutral) / PWM_Period)
+
+// Define PWM duty cycle states. We alternate between a 1.0 mS
+// pulse and a 2.0 mS pulse. The full period (1000) is 20.0 mS.
+// 1.0 mS is 1/20 (50/1000) and 2.0 mS is 2/20 (100/1000).
+//
+typedef enum { PWM_CCW_100, PWM_Stop, PWM_CW_100 } PWM_States;
+PWM_States PWM_CurrentState = PWM_Stop;
+
+//
+// Task initialization
+//
+extern void Task_Motor_PWM_0_4( void *pvParameters ) {
+
+//
+// Constants and Variables
+//
+// Time interval between changes in duty cycle, 0.5 Seconds
+//
+uint32_t DutyCycleDelta = pdMS_TO_TICKS( 1000 );
+ //
+ // Configure PWM_0_0 for XX mS period.
+ //
+ SysCtlPeripheralEnable( SYSCTL_PERIPH_GPIOG );
+ SysCtlPeripheralEnable( SYSCTL_PERIPH_PWM0 );
+
+ //
+ // Configure the GPIO pin muxing to select PWM_0_4 functions for these pins.
+ // This step selects which alternate function is available for these pins.
+ // This is necessary if your part supports GPIO pin function muxing.
+ // Consult the data sheet to see which functions are allocated per pin.
+ // Set GPIO PortG<0> as PWM pins to output the PWM_0_4 signal.
+  // PWM signals were taken from Table 10–2 of the TM4C1294 datasheet.
+  //
+ GPIOPinConfigure( GPIO_PG0_M0PWM4 );
+ GPIOPinTypePWM( GPIO_PORTG_BASE, GPIO_PIN_0 );
+ //
+ // Configure PWM0 to count down without synchronization.
+ //
+ PWMClockSet( PWM0_BASE, PWM_SYSCLK_DIV_64 );
+ PWMGenConfigure( PWM0_BASE, PWM_GEN_2, PWM_GEN_MODE_DOWN |
+  PWM_GEN_MODE_NO_SYNC );
+ PWMGenPeriodSet( PWM0_BASE, PWM_GEN_2, PWM_0_4_Period );
+ //
+ // Set PWM_0_4 to a duty cycle of PWM_0_4_Neutral_Count
+ //
+ PWMPulseWidthSet( PWM0_BASE, PWM_OUT_4, PWM_0_4_Neutral_Count );
+
+ //
+ // Enable the PWM_0_4 output signals.
+ //
+ PWMOutputState( PWM0_BASE, PWM_OUT_4_BIT, true );
+ //
+ // Enable the PWM generators.
+ //
+ PWMGenEnable( PWM0_BASE, PWM_GEN_2 );
+
+
+
+extern void Task_PWM( void *pvParameters ) {
+
+    unsigned long ulValue;
+    //
+    // Configure ADC<9> to read potentiometer voltage.
+    // The TM4C
+    //
+    SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC0 );
+    ADCSequenceConfigure( ADC0_BASE, 0, ADC_TRIGGER_PROCESSOR, 1 );
+    ADCSequenceStepConfigure( ADC0_BASE, 0, 0, ADC_CTL_IE | ADC_CTL_END | ADC_CTL_CH9 );
+    ADCSequenceEnable( ADC0_BASE, 0 );
+    while(1){
+    //
+    // Trigger the sample sequence.
+    //
+    ADCProcessorTrigger(ADC0_BASE, 0);
+    //
+    // Wait until the sample sequence has completed.
+    //
+    while(!ADCIntStatus(ADC0_BASE, 0, false))
+    {
+    }
+    //
+    // Read the value from the ADC.
+    //
+    ADCSequenceDataGet(ADC0_BASE, 0, &ulValue);
+    UARTprintf("\nADC : %d\n", ulValue);
+    vTaskDelay(10000);
+    }
+}

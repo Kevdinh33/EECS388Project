@@ -1,0 +1,50 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+SHELL = cmd.exe
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../Drivers/EECS388_DAC.c \
+../Drivers/EECS388_LED.c \
+../Drivers/Processor_Initialization_TM4C1294.c \
+../Drivers/UARTStdio_Initialization_TM4C1294.c \
+../Drivers/uartstdio.c 
+
+C_DEPS += \
+./Drivers/EECS388_DAC.d \
+./Drivers/EECS388_LED.d \
+./Drivers/Processor_Initialization_TM4C1294.d \
+./Drivers/UARTStdio_Initialization_TM4C1294.d \
+./Drivers/uartstdio.d 
+
+OBJS += \
+./Drivers/EECS388_DAC.obj \
+./Drivers/EECS388_LED.obj \
+./Drivers/Processor_Initialization_TM4C1294.obj \
+./Drivers/UARTStdio_Initialization_TM4C1294.obj \
+./Drivers/uartstdio.obj 
+
+OBJS__QUOTED += \
+"Drivers\EECS388_DAC.obj" \
+"Drivers\EECS388_LED.obj" \
+"Drivers\Processor_Initialization_TM4C1294.obj" \
+"Drivers\UARTStdio_Initialization_TM4C1294.obj" \
+"Drivers\uartstdio.obj" 
+
+C_DEPS__QUOTED += \
+"Drivers\EECS388_DAC.d" \
+"Drivers\EECS388_LED.d" \
+"Drivers\Processor_Initialization_TM4C1294.d" \
+"Drivers\UARTStdio_Initialization_TM4C1294.d" \
+"Drivers\uartstdio.d" 
+
+C_SRCS__QUOTED += \
+"../Drivers/EECS388_DAC.c" \
+"../Drivers/EECS388_LED.c" \
+"../Drivers/Processor_Initialization_TM4C1294.c" \
+"../Drivers/UARTStdio_Initialization_TM4C1294.c" \
+"../Drivers/uartstdio.c" 
+
+

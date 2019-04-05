@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;EECS_388_Base_Project_Fa18/Tasks/Task_PWM.c&apos;" deleteContents="false" description="Delete resource &apos;EECS_388_Base_Project_Fa18/Tasks/Task_PWM.c&apos;" element1="/EECS_388_Base_Project_Fa18/Tasks/Task_PWM.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1554321822814"/>
+</session>

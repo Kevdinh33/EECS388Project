@@ -1,0 +1,49 @@
+/*--Task_Buzzer.c
+ *
+ *  Author:			Kevin Dinh
+ *	Organization:	KU/EECS/EECS 388
+ *  Date:			February 22, 2016
+ *
+ *  Description:	Blinks LED D1 on Tiva TMC41294 Evaluation board
+ *
+ */
+
+#include	"inc/hw_ints.h"
+#include	"inc/hw_memmap.h"
+#include	"inc/hw_types.h"
+#include	"inc/hw_uart.h"
+
+#include	<stddef.h>
+#include	<stdbool.h>
+#include	<stdint.h>
+#include	<stdarg.h>
+
+#include	"driverlib/sysctl.h"
+#include	"driverlib/pin_map.h"
+#include	"driverlib/gpio.h"
+
+#include	"FreeRTOS.h"
+#include	"task.h"
+#include    "Drivers/EECS388_DAC.h"
+
+#include    "Drivers/EECS388_LED.h"
+
+#define     LED_Bits_Nbr    10
+#define     LED_InitialState    0b0001
+
+extern void Task_LED( void *pvParameters){
+    int32_t LED_Data = LED_InitialState;
+    int32_t LED_WhichBit = 0;
+    int i;
+
+    EECS388_LED_Initialization();
+
+    while (1){
+        for(i = 0; i <=10; i++){
+        EECS388_SetLEDs(LED_Data);
+        LED_Data = LED_Data<<1;
+        vTaskDelay(100);
+        }
+        vTaskDelay((100* configTICK_RATE_HZ) / 1000);
+    }
+}

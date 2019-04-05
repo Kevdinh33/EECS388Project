@@ -1,0 +1,139 @@
+/*--Task_Button.c
+ *
+ *  Author:			Kevin Dinh
+ *	Organization:	KU/EECS/EECS 388
+ *  Date:			February 22, 2016
+ *
+ *  Description:	Makes noise when button is pressed on Tiva TMC41294 Evaluation board
+ *
+ */
+
+#include	"inc/hw_ints.h"
+#include	"inc/hw_memmap.h"
+#include	"inc/hw_types.h"
+#include	"inc/hw_uart.h"
+
+#include	<stddef.h>
+#include	<stdbool.h>
+#include	<stdint.h>
+#include	<stdarg.h>
+
+#include	"driverlib/sysctl.h"
+#include	"driverlib/pin_map.h"
+#include	"driverlib/gpio.h"
+
+#include	"FreeRTOS.h"
+#include	"task.h"
+
+#include    "Drivers/EECS388_DAC.h"
+
+#include    "driverlib/adc.h"
+
+
+#include "Drivers/UARTStdio_Initialization.h"
+#include "Drivers/uartstdio.h"
+
+
+extern void Task_Cap( void *pvParameters ) {
+
+    UARTStdio_Initialization();
+
+    //
+    //Enable Ports
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
+    SysCtlPeripheralEnable( SYSCTL_PERIPH_ADC0 );
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOJ);
+
+    //
+    //Set Ports
+    //
+    GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_0 );
+    GPIOPinTypeGPIOInput(GPIO_PORTJ_BASE, GPIO_PIN_1 );
+    GPIOPadConfigSet(GPIO_PORTJ_BASE, GPIO_PIN_0|GPIO_PIN_1, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
+
+
+    ADCSequenceConfigure( ADC0_BASE, 0, ADC_TRIGGER_PROCESSOR, 1 );
+    ADCSequenceStepConfigure( ADC0_BASE, 0, 0, ADC_CTL_IE | ADC_CTL_END | ADC_CTL_CH3 );
+    ADCSequenceEnable( ADC0_BASE, 0 );
+
+
+    //
+    //Set Port C<7>
+    //
+    GPIOPinTypeGPIOOutput(GPIO_PORTC_BASE, GPIO_PIN_7 );
+    GPIOPadConfigSet( GPIO_PORTC_BASE, GPIO_PIN_7, GPIO_STRENGTH_4MA, GPIO_PIN_TYPE_OD );
+    GPIOPinWrite( GPIO_PORTC_BASE, GPIO_PIN_7, 0x80 );
+
+
+    unsigned long ulValue;
+    int i;
+    int array[100];
+
+    enum button{idle, debounce, pressed, released};
+    enum button currentstate = idle;
+
+	while ( 1 ) {
+
+	    int value = GPIOPinRead( GPIO_PORTJ_BASE, GPIO_PIN_0|GPIO_PIN_1 );
+	    switch(currentstate){
+
+	    case idle :
+	        if(value == 3){
+	            vTaskDelay(10);
+	            break;
+	        }
+	        else{
+	            currentstate = debounce;
+	            break;
+	        }
+
+	    case debounce:
+	        vTaskDelay( 100 );
+
+	        if(value != 3){
+	            currentstate = pressed;
+	        }
+	        else{
+	            currentstate = idle;
+	            break;
+	        }
+
+	    case pressed:
+	        vTaskDelay(100);
+	        if(value == 0 || value == 1 || value == 2){
+                currentstate = pressed;
+                break;
+	        }
+	        else{
+	            currentstate = released;
+	            break;
+	        }
+
+	    case released:
+	        if(value == 3){
+	            GPIOPinWrite( GPIO_PORTC_BASE, GPIO_PIN_7, 0x00 );
+	            vTaskDelay(100);
+	            GPIOPinWrite( GPIO_PORTC_BASE, GPIO_PIN_7, 0x80 );
+	            for(i = 0; i < 100; i++){
+                  ADCProcessorTrigger(ADC0_BASE, 0);
+                  while(!ADCIntStatus(ADC0_BASE, 0, false))
+                  {
+                  }
+	              ADCSequenceDataGet(ADC0_BASE, 0, &ulValue);
+                  array[i] = ulValue;
+                  SysCtlDelay(40000);
+	            }
+	            for(i = 0; i < 100; i++){
+	              UARTprintf("\nADC : %d\n", array[i]);
+	            }
+                currentstate = idle;
+                break;
+	        }
+	        else{
+	            currentstate = idle;
+	            break;
+	        }
+	    }
+	}
+}
